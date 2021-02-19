@@ -1,6 +1,7 @@
 library(readxl)
 library(lubridate)
 library(dplyr)
+library(ggplot2)
 
 # what sheets do we have?
 #readxl::excel_sheets(path = "data/DaVinci_ShinyApps.xlsx")
@@ -54,6 +55,9 @@ shiny_apps <- access %>%
   arrange(app_name) %>% 
   distinct()
 
+head(shiny_apps)
+tail(shiny_apps)
+
 # shiny apps with "test"
 shiny_apps %>% 
   filter(grepl("test", ignore.case = TRUE, app_name))
@@ -71,3 +75,14 @@ access %>%
   select(user_id) %>% 
   arrange(user_id) %>% 
   distinct()
+
+
+ggplot(data = access) +
+  geom_histogram(mapping = aes(x = last_used))
+
+access %>% 
+  group_by(last_used) %>% 
+  summarise(n = n())
+
+ggplot(data = access) +
+  geom_line(mapping = aes(x = last_used))
